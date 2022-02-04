@@ -18,7 +18,7 @@ export default function BasicSelect({index}) {
   const { players, setPlayers, availability, setAvailability } = useAuth()
   
   const colorOptions = ['#f6e58d', '#7ed6df', '#ff7979', '#badc58']
-  const colors = ['yellow','blue','red','green']
+  // const colors = ['yellow','blue','red','green']
 
   const handleChange = (e,index) => {
     const oldColor = players[index]
