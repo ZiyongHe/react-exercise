@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-import Card from '@material-ui/core/Card'
-import BasicSelect from './BasicSelect.js'
+import { TextField, Button, Card } from '@material-ui/core'
 
-import ColorContext from '../utils/ColorContext.js'
+import BasicSelect from './BasicSelect.js'
+import { useAuth } from '../utils/AuthContext'
+
 
 const StyledCard = styled(Card)`
     width: 40%;
     padding: 20px;
-    height: 140px;
+    height: 200px;
 `
 
 const Wrapper = styled.div`
@@ -18,54 +18,67 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-content: space-between;
     flex-wrap: wrap;
-    width: 80%;
-    height: 400px;
+    width: 100%;
+    height: 600px;
+    padding-top:100px;
     padding-bottom: 30px;
 `
 
-const StyledLink = styled(Link)`
-    text-decoration:none;
-    color:black;
-    line-height:3em;
+const StyledTitle = styled.p`
+    padding-top:50px;
 `
 
 
 function Cards() {
 
-    const [players, setPlayers] = React.useState(['','','','']);
-    const [availability, setAvailability] = React.useState([1,1,1,1])
 
+    const [image, setImage] = React.useState(null)
+    const { uploadImage, players } = useAuth()
+
+    
     const card1 = React.useRef(null)
     const card2 = React.useRef(null)
     const card3 = React.useRef(null)
     const card4 = React.useRef(null)
-
     
+    const handleChange = (e) => {
+        if(e.target.files[0]){
+            setImage(e.target.files[0])
+        }
+    }
+
+    const handleUpload = () => {
+        uploadImage(image)
+    }
 
     return (
-        <ColorContext.Provider value={{players,setPlayers,availability,setAvailability}}>
+        <div>
+            <StyledTitle>Change profile picture here</StyledTitle>
+            <TextField type='file' onChange={handleChange}></TextField>
+            <br></br>
+            <Button variant="contained" onClick={handleUpload}>Upload</Button>
             <Wrapper>
-                <StyledCard id="p1" ref={card1}>
-                    <StyledLink to="/player1">player 1</StyledLink>
-                    <BasicSelect index={0} card={card1}/>
+                <StyledCard ref={card1} style={{background:players[0]}}>
+                    <p>player 1</p>
+                    <BasicSelect index={0}/>
                 </StyledCard>
 
-                <StyledCard id="p2" ref={card2}>
-                    <StyledLink to="/player2">player 2</StyledLink>
-                    <BasicSelect index={1} card={card2}/>
+                <StyledCard ref={card2} style={{background:players[1]}}>
+                    <p>player 2</p>
+                    <BasicSelect index={1}/>
                 </StyledCard>
 
-                <StyledCard id="p3" ref={card3}>
-                    <StyledLink to="/player3">player 3</StyledLink>
-                    <BasicSelect index={2} card={card3}/>
+                <StyledCard ref={card3} style={{background:players[2]}}>
+                    <p>player 3</p>
+                    <BasicSelect index={2}/>
                 </StyledCard>
 
-                <StyledCard id="p4" ref={card4}>
-                    <StyledLink to="/player4">player 4</StyledLink>
-                    <BasicSelect index={3} card={card4}/>
+                <StyledCard ref={card4} style={{background:players[3]}}>
+                    <p>player 4</p>
+                    <BasicSelect index={3}/>
                 </StyledCard>
             </Wrapper>
-        </ColorContext.Provider>
+        </div>
     )
 }
 
